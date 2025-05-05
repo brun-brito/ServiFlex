@@ -4,7 +4,7 @@ import api from "../../services/api";
 
 export default function ListarProcedimentos() {
   const { id } = useParams();
-  const [procedimentos, setProcedimentos] = useState([]);
+  const [procedimentos, setProcedimentos] = useState<any[] | null>(null);
   const [erro, setErro] = useState("");
   const [editandoId, setEditandoId] = useState<string | null>(null);
   const [nomeEdit, setNomeEdit] = useState("");
@@ -138,7 +138,7 @@ export default function ListarProcedimentos() {
         </div>
       )}
 
-      {procedimentos.length === 0 ? (
+      {!procedimentos || procedimentos.length === 0 ? (
         <div className="alert alert-info text-center">Nenhum procedimento encontrado.</div>
       ) : (
         procedimentos.map((proc: any) => (

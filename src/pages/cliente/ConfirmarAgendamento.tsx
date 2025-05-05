@@ -29,7 +29,7 @@ export default function ConfirmarAgendamento() {
       });
 
       alert("Agendamento confirmado com sucesso!");
-      navigate("/listaEstabelecimentos"); // Redireciona após confirmação
+      navigate("/MeusAgendamentos"); // Redireciona após confirmação
     } catch (error) {
       console.error("Erro ao agendar:", error);
       alert("Erro ao confirmar agendamento.");
@@ -41,7 +41,7 @@ export default function ConfirmarAgendamento() {
       <h2 className="text-center mb-4">Confirmar Agendamento</h2>
       <div className="card p-4">
         <p>
-          <strong>Profissional:</strong> {profissional_id}
+          <strong>Profissional:</strong> {localStorage.getItem("usuarioNome")}
         </p>
         <p>
           <strong>Procedimento:</strong> {procedimento}
