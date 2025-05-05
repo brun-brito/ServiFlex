@@ -29,6 +29,8 @@ export default function ListarEstabelecimentos() {
 
     return (
         <div className="container my-4">
+            <div className="d-flex justify-content-end mb-3">
+            </div>
             <h2 className="text-center mb-4">Lista de Estabelecimentos</h2>
             {erro && <div className="alert alert-danger">{erro}</div>}
             {loading ? (
@@ -42,20 +44,23 @@ export default function ListarEstabelecimentos() {
                             style={{ backgroundColor: "#f9f9f9" }}
                         >
                             {/* Imagem à esquerda */}
-                            {estabelecimento.imagem_url && (
-                                <img
-                                    src={estabelecimento.imagem_url}
-                                    alt={estabelecimento.nome}
-                                    className="img-fluid"
-                                    style={{
-                                        width: "100px",
-                                        height: "100px",
-                                        objectFit: "cover",
-                                        borderRadius: "8px",
-                                        marginRight: "20px",
-                                    }}
-                                />
-                            )}
+                            <img
+                                src={estabelecimento.imagem_url?.trim() || "https://placehold.co/100?text=Sem+Imagem"}
+                                alt={estabelecimento.nome}
+                                onError={(e) => {
+                                    if (e.currentTarget.src !== "https://placehold.co/100?text=Sem+Imagem") {
+                                        e.currentTarget.src = "https://placehold.co/100?text=Sem+Imagem";
+                                    }
+                                }}
+                                className="img-fluid"
+                                style={{
+                                    width: "100px",
+                                    height: "100px",
+                                    objectFit: "cover",
+                                    borderRadius: "8px",
+                                    marginRight: "20px",
+                                }}
+                            />
                             {/* Nome do estabelecimento */}
                             <div className="d-flex flex-column">
                                 <h5 className="mb-2" style={{ fontWeight: "bold" }}>

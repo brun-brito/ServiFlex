@@ -1,13 +1,18 @@
+import type { JSX } from "react";
+import Layout from "./components/Layout";
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/geral/Login";
 import Cadastro from "./pages/geral/Cadastro";
 import ListaEstabelecimentos from "./pages/cliente/ListaEstabelecimentos";
 import AgendaProfissional from "./pages/profissional/AgendaProfissional";
 import HorariosProfissional from "./pages/profissional/HorariosProfissional";
 import ListarProcedimentos from "./pages/cliente/ListarProcedimentos";
-import VisualizarAgendamentos from "./pages/profissional/VisualizarAgendamentos";
 
+function PrivateRoute({ children }: { children: JSX.Element }) {
+    const isAuthenticated = localStorage.getItem("usuarioId") !== null;
+    return isAuthenticated ? children : <Navigate to="/" replace />;
+}
 
 function App() {
     return (
@@ -17,23 +22,43 @@ function App() {
                 <Route path="/cadastro" element={<Cadastro />} />
                 <Route
                     path="/listaEstabelecimentos"
-                    element={<ListaEstabelecimentos />}
+                    element={
+                        <PrivateRoute>
+                        <Layout>
+                            <ListaEstabelecimentos />
+                        </Layout>
+                        </PrivateRoute>
+                    }
                 />
                 <Route
-                    path="/procedimentos/:id" 
-                    element={<ListarProcedimentos />} 
+                    path="/procedimentos/:id"
+                    element={
+                        <PrivateRoute>
+                        <Layout>
+                            <ListarProcedimentos />
+                        </Layout>
+                        </PrivateRoute>
+                    }
                 />
                 <Route
                     path="/agendaProfissional"
-                    element={<AgendaProfissional />}
+                    element={
+                        <PrivateRoute>
+                        <Layout>
+                            <AgendaProfissional />
+                        </Layout>
+                        </PrivateRoute>
+                    }
                 />
                 <Route
                     path="/horarios-profissional"
-                    element={<HorariosProfissional />}
-                />
-                <Route 
-                    path="/agendamentos-profissional" 
-                    element={<VisualizarAgendamentos />}
+                    element={
+                        <PrivateRoute>
+                        <Layout>
+                            <HorariosProfissional />
+                        </Layout>
+                        </PrivateRoute>
+                    }
                 />
             </Routes>
         </Router>
