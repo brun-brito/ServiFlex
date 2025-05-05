@@ -11,6 +11,7 @@ export default function ListarProcedimentos() {
   const [descricaoEdit, setDescricaoEdit] = useState("");
   const [precoEdit, setPrecoEdit] = useState("");
   const [duracaoEdit, setDuracaoEdit] = useState("");
+  const [imagemEdit, setImagemEdit] = useState("");
   const [novoNome, setNovoNome] = useState("");
   const [novaDescricao, setNovaDescricao] = useState("");
   const [novoPreco, setNovoPreco] = useState("");
@@ -51,6 +52,9 @@ export default function ListarProcedimentos() {
         duracao_min: parseInt(duracaoEdit),
         profissional_id: id,
       });
+      if (imagemEdit) {
+        await api.put(`/upload/procedimento/${procId}`, { imagem_url: imagemEdit });
+      }
       setEditandoId(null);
       carregarProcedimentos();
     } catch {
@@ -65,17 +69,24 @@ export default function ListarProcedimentos() {
     }
 
     try {
-      await api.post("/procedimentos", {
+      const response = await api.post("/procedimentos", {
         nome: novoNome,
         descricao: novaDescricao,
         preco: parseFloat(novoPreco),
         duracao_min: parseInt(novaDuracao),
         profissional_id: id,
       });
+
+      const novoId = response.data.id;
+      if (imagemEdit) {
+        await api.put(`/upload/procedimento/${novoId}`, { imagem_url: imagemEdit });
+      }
+
       setNovoNome("");
       setNovaDescricao("");
       setNovoPreco("");
       setNovaDuracao("");
+      setImagemEdit("");
       setMostrarFormulario(false);
       carregarProcedimentos();
     } catch {
@@ -129,6 +140,13 @@ export default function ListarProcedimentos() {
             value={novaDuracao}
             onChange={(e) => setNovaDuracao(e.target.value)}
           />
+          <input
+            className="form-control mb-2"
+            type="text"
+            placeholder="URL da imagem (opcional)"
+            value={imagemEdit}
+            onChange={(e) => setImagemEdit(e.target.value)}
+          />
           <div className="text-end">
             <button className="btn btn-secondary me-2" onClick={() => setMostrarFormulario(false)}>Cancelar</button>
             <button className="btn btn-success" onClick={adicionarProcedimento}>
@@ -143,49 +161,72 @@ export default function ListarProcedimentos() {
       ) : (
         procedimentos.map((proc: any) => (
           <div className="border rounded p-3 mb-3 shadow-sm" key={proc.id}>
-            {editandoId === proc.id ? (
-              <>
-                <input className="form-control mb-2" value={nomeEdit} onChange={e => setNomeEdit(e.target.value)} />
-                <textarea className="form-control mb-2" value={descricaoEdit} onChange={e => setDescricaoEdit(e.target.value)} />
-                <input className="form-control mb-2" type="number" value={precoEdit} onChange={e => setPrecoEdit(e.target.value)} />
-                <input
-                  className="form-control mb-2"
-                  type="number"
-                  value={duracaoEdit}
-                  onChange={(e) => setDuracaoEdit(e.target.value)}
-                  placeholder="Duração (min)"
-                />
-                <div className="text-end">
-                  <button className="btn btn-sm btn-success me-2" onClick={() => salvarEdicao(proc.id)}>
-                    <i className="bi bi-check-lg"></i> Salvar
-                  </button>
-                  <button className="btn btn-sm btn-secondary" onClick={() => setEditandoId(null)}>
-                    Cancelar
-                  </button>
-                </div>
-              </>
-            ) : (
-              <>
-                <h5>{proc.nome}</h5>
-                <p><strong>Descrição:</strong> {proc.descricao}</p>
-                <p><strong>Preço:</strong> R$ {Number(proc.preco).toFixed(2)}</p>
-                <p><strong>Duração:</strong> {Number(proc.duracao_min)} minutos</p>
-                <div className="text-end">
-                  <button className="btn btn-sm btn-outline-danger me-2" onClick={() => deletar(proc.id)}>
-                    <i className="bi bi-trash"></i> Deletar
-                  </button>
-                  <button className="btn btn-sm btn-outline-primary" onClick={() => {
-                    setEditandoId(proc.id);
-                    setNomeEdit(proc.nome);
-                    setDescricaoEdit(proc.descricao);
-                    setPrecoEdit(String(proc.preco));
-                    setDuracaoEdit(String(proc.duracao_min));
-                  }}>
-                    <i className="bi bi-pencil-square"></i> Editar
-                  </button>
-                </div>
-              </>
-            )}
+            <div className="d-flex align-items-center">
+              <img
+                src={proc.imagem_url || "https://placehold.co/120x120?text=Foto"}
+                alt={proc.nome}
+                className="img-fluid me-3"
+                style={{
+                  width: "100px",
+                  height: "100px",
+                  objectFit: "cover",
+                  borderRadius: "8px",
+                }}
+              />
+              <div className="flex-grow-1">
+                {editandoId === proc.id ? (
+                  <>
+                    <input className="form-control mb-2" value={nomeEdit} onChange={e => setNomeEdit(e.target.value)} />
+                    <textarea className="form-control mb-2" value={descricaoEdit} onChange={e => setDescricaoEdit(e.target.value)} />
+                    <input className="form-control mb-2" type="number" value={precoEdit} onChange={e => setPrecoEdit(e.target.value)} />
+                    <input
+                      className="form-control mb-2"
+                      type="number"
+                      value={duracaoEdit}
+                      onChange={(e) => setDuracaoEdit(e.target.value)}
+                      placeholder="Duração (min)"
+                    />
+                    <input
+                      className="form-control mb-2"
+                      type="text"
+                      placeholder="URL da imagem"
+                      value={imagemEdit}
+                      onChange={(e) => setImagemEdit(e.target.value)}
+                    />
+                    <div className="text-end">
+                      <button className="btn btn-sm btn-success me-2" onClick={() => salvarEdicao(proc.id)}>
+                        <i className="bi bi-check-lg"></i> Salvar
+                      </button>
+                      <button className="btn btn-sm btn-secondary" onClick={() => setEditandoId(null)}>
+                        Cancelar
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <h5>{proc.nome}</h5>
+                    <p><strong>Descrição:</strong> {proc.descricao}</p>
+                    <p><strong>Preço:</strong> R$ {Number(proc.preco).toFixed(2)}</p>
+                    <p><strong>Duração:</strong> {Number(proc.duracao_min)} minutos</p>
+                    <div className="text-end">
+                      <button className="btn btn-sm btn-outline-danger me-2" onClick={() => deletar(proc.id)}>
+                        <i className="bi bi-trash"></i> Deletar
+                      </button>
+                      <button className="btn btn-sm btn-outline-primary" onClick={() => {
+                        setEditandoId(proc.id);
+                        setNomeEdit(proc.nome);
+                        setDescricaoEdit(proc.descricao);
+                        setPrecoEdit(String(proc.preco));
+                        setDuracaoEdit(String(proc.duracao_min));
+                        setImagemEdit(proc.imagem_url || "https://placehold.co/120x120?text=Foto");
+                      }}>
+                        <i className="bi bi-pencil-square"></i> Editar
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
           </div>
         ))
       )}
