@@ -31,10 +31,6 @@ function App() {
                     path="/horarios-profissional"
                     element={<HorariosProfissional />}
                 />
-                <Route 
-                    path="/agendamentos-profissional" 
-                    element={<VisualizarAgendamentos />}
-                />
             </Routes>
         </Router>
     );
