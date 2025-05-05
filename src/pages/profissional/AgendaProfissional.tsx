@@ -174,9 +174,20 @@ export default function VisualizarAgendamentos() {
 
             {/* Botões de navegação */}
             <div className="text-center mt-5">
-                <button className="btn btn-outline-primary me-3 d-inline-flex align-items-center" onClick={() => navigate("/horarios-profissional")}>
+                <button
+                    className="btn btn-outline-primary me-3 d-inline-flex align-items-center"
+                    onClick={() => navigate("/horarios-profissional")}
+                >
                     <i className="bi bi-pencil me-2"></i>
                     Editar Horários
+                </button>
+
+                <button
+                    className="btn btn-outline-secondary d-inline-flex align-items-center mt-3"
+                    onClick={() => navigate(`/meus-procedimentos/${profissionalId}`)}
+                >
+                    <i className="bi bi-list-ul me-2"></i>
+                    Gerenciar Procedimentos
                 </button>
             </div>
         </div>
