@@ -29,7 +29,7 @@ export default function ConfirmarAgendamento() {
       });
 
       alert("Agendamento confirmado com sucesso!");
-      navigate("/"); // Redireciona após confirmação
+      navigate("/listaEstabelecimentos"); // Redireciona após confirmação
     } catch (error) {
       console.error("Erro ao agendar:", error);
       alert("Erro ao confirmar agendamento.");
