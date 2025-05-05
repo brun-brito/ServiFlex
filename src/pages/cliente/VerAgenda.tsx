@@ -69,7 +69,7 @@ export default function VerAgenda() {
     const diasSemana = [
       "domingo",
       "segunda",
-      "terça",
+      "terca",
       "quarta",
       "quinta",
       "sexta",
