@@ -11,21 +11,20 @@ export default function ListarProcedimentos() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Função que busca os procedimentos do profissional na API
         const fetchProcedimentos = async () => {
             if (!id) return;
             setLoading(true);
             setErro("");
             try {
                 const response = await api.get(`/procedimentos/${id}`);
-                setProcedimentos(response.data); // Armazena os procedimentos no estado
+                setProcedimentos(Array.isArray(response.data) ? response.data : []);
             } catch (err) {
                 setErro("Erro ao carregar os procedimentos.");
             } finally {
                 setLoading(false);
             }
         };
-
+    
         fetchProcedimentos();
     }, [id]);
 
