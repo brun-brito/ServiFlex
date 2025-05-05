@@ -27,6 +27,7 @@ export default function VerAgenda() {
   const location = useLocation();
   const procedimento = location.state?.procedimento;
   const navigate = useNavigate();
+  const idCliente = localStorage.getItem("usuarioId");
 
   const [horariosDisponiveis, setHorariosDisponiveis] = useState<
     HorarioDisponivel[]
@@ -65,9 +66,16 @@ export default function VerAgenda() {
   useEffect(() => {
     if (!dataSelecionada) return;
 
-    const diaSemana = normalizarDia(
-      dataSelecionada.toLocaleDateString("pt-BR", { weekday: "long" })
-    );
+    const diasSemana = [
+      "domingo",
+      "segunda",
+      "terça",
+      "quarta",
+      "quinta",
+      "sexta",
+      "sabado",
+    ];
+    const diaSemana = diasSemana[dataSelecionada.getDay()];
 
     const horariosDoDia = horariosDisponiveis.filter(
       (h) => normalizarDia(h.dia_semana) === diaSemana && h.disponivel
@@ -102,7 +110,7 @@ export default function VerAgenda() {
 
     navigate("/ConfirmarAgendamento", {
       state: {
-        cliente_id: "123",
+        cliente_id: idCliente,
         profissional_id: idProfissional,
         procedimento: procedimento?.nome || "Procedimento",
         dataHora,
@@ -111,9 +119,16 @@ export default function VerAgenda() {
   };
 
   const desabilitarDias = (date: Date) => {
-    const nomeDia = normalizarDia(
-      date.toLocaleDateString("pt-BR", { weekday: "long" })
-    );
+    const diasSemana = [
+      "domingo",
+      "segunda",
+      "terca",
+      "quarta",
+      "quinta",
+      "sexta",
+      "sabado",
+    ];
+    const nomeDia = diasSemana[date.getDay()];
     return !diasDisponiveis.includes(nomeDia);
   };
 
@@ -165,7 +180,7 @@ export default function VerAgenda() {
         className="btn btn-secondary mt-4"
         onClick={() => navigate(`/procedimentos/${idProfissional}`)}
       >
-        Voltar para os estabelecimentos
+        Voltar para os procedimentos
       </button>
     </div>
   );
