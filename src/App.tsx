@@ -5,6 +5,8 @@ import Cadastro from "./pages/geral/Cadastro";
 import ListaEstabelecimentos from "./pages/cliente/ListaEstabelecimentos";
 import AgendaProfissional from "./pages/profissional/AgendaProfissional";
 import HorariosProfissional from "./pages/profissional/HorariosProfissional";
+import ListarProcedimentos from "./pages/cliente/ListarProcedimentos";
+import VisualizarAgendamentos from "./pages/profissional/VisualizarAgendamentos";
 
 
 function App() {
@@ -18,12 +20,20 @@ function App() {
                     element={<ListaEstabelecimentos />}
                 />
                 <Route
+                    path="/procedimentos/:id" 
+                    element={<ListarProcedimentos />} 
+                />
+                <Route
                     path="/agendaProfissional"
                     element={<AgendaProfissional />}
                 />
                 <Route
                     path="/horarios-profissional"
                     element={<HorariosProfissional />}
+                />
+                <Route 
+                    path="/agendamentos-profissional" 
+                    element={<VisualizarAgendamentos />}
                 />
             </Routes>
         </Router>

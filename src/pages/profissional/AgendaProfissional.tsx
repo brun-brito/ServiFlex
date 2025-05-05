@@ -18,6 +18,9 @@ export default function AgendaProfissional() {
                 <Link to="/horarios-profissional" className="btn btn-primary mt-3">
                     Horários do profissional
                 </Link>
+                <Link to="/agendamentos-profissional" className="btn btn-primary mt-3">
+                    Visualizar Agendamentos
+                </Link>
             </div>
         </div>
     );
