@@ -52,7 +52,7 @@ export default function ListarProcedimentos() {
                 {/* Imagem à esquerda */}
                 <img
                   src={
-                    procedimento.imagem_url || "https://via.placeholder.com/100"
+                    procedimento.imagem_url || "https://placehold.co/120x120?text=Foto"
                   }
                   alt={procedimento.nome}
                   style={{

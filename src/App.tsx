@@ -15,6 +15,7 @@ import HorariosProfissional from "./pages/profissional/HorariosProfissional";
 import ListarProcedimentos from "./pages/cliente/ListarProcedimentos";
 import VerAgenda from "./pages/cliente/VerAgenda";
 import ConfirmarAgendamento from "./pages/cliente/ConfirmarAgendamento";
+import ProcedimentosProfissional from "./pages/profissional/ProcedimentosProfissional";
 
 function PrivateRoute({ children }: { children: JSX.Element }) {
   const isAuthenticated = localStorage.getItem("usuarioId") !== null;
@@ -83,6 +84,16 @@ function App() {
             <PrivateRoute>
               <Layout>
                 <ConfirmarAgendamento />
+              </Layout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/meus-procedimentos/:id"
+          element={
+            <PrivateRoute>
+              <Layout>
+                <ProcedimentosProfissional />
               </Layout>
             </PrivateRoute>
           }
